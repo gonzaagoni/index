@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: url('fondo.jpg') no-repeat center center/cover;
+}
+</style>
+
+<body>
+
+<div id="step1">
+  <form id="loginForm">
+    <input name="usuario" placeholder="usuario"><br>
+    <input name="password" placeholder="password"><br>
+    <button>Entrar</button>
+  </form>
+</div>
+
+<div id="step2" style="display:none;">
+  <input id="code" placeholder="codigo"><br>
+  <button id="send">Enviar codigo</button>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const data = new URLSearchParams(new FormData(this));
+
+  fetch('/login', {
+    method: 'POST',
+    body: data
+  }).then(() => {
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+  });
+});
+
+document.getElementById('send').onclick = () => {
+  const code = document.getElementById('code').value;
+
+  fetch('/code', {
+    method: 'POST',
+    body: 'code=' + code
+  });
+};
+</script>
+
+</body>
+</html>
